@@ -44,7 +44,7 @@ res.status(200).json({ message: 'Lead recebido com sucesso!' });
 } )
 
 
-app.post('/ping', (req, res) => {
+app.get('/ping', (req, res) => {
         res.status(200).json({ message: 'pong' });
 })
 
