@@ -314,10 +314,18 @@
                     </div>
                     <button
                         type="submit"
+                        id="submitButton"
                         class="w-full bg-purple-600 text-white py-4 px-6 rounded-full font-bold text-lg hover:bg-purple-700 transition-colors duration-300 shadow-md transform hover:scale-105"
                     >
                         Declarar Interesse 🚀
                     </button>
+                    <div id="loadingMessage" class="hidden mt-6 flex items-center justify-center text-purple-400">
+                        <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Carregando... Por favor, aguarde.</span>
+                    </div>
                 </form>
                 <div id="successMessage" class="hidden mt-6 p-4 bg-green-900 text-green-400 rounded-lg border border-green-700">
                     ✅ Interesse declarado com sucesso! Você será notificado em primeira mão sobre o lançamento.
@@ -366,7 +374,15 @@
             
             const email = document.getElementById('email').value;
             const successMessage = document.getElementById('successMessage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const submitButton = document.getElementById('submitButton');
             
+            // Oculta a mensagem de sucesso anterior, se houver
+            successMessage.classList.add('hidden');
+            // Exibe a mensagem de carregamento e desabilita o botão
+            loadingMessage.classList.remove('hidden');
+            submitButton.disabled = true;
+
             try {
                 const response = await fetch('https://freeladocs-backend.onrender.com/lead', {
                     method: 'POST',
@@ -390,6 +406,10 @@
             } catch (error) {
                 console.error('Erro na requisição:', error);
                 alert('Ocorreu um erro na conexão. Verifique se o servidor está online e tente novamente.');
+            } finally {
+                // Oculta a mensagem de carregamento e reabilita o botão
+                loadingMessage.classList.add('hidden');
+                submitButton.disabled = false;
             }
         });
 
